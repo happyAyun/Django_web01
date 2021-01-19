@@ -1,0 +1,186 @@
+<!-- Add your content of head and header -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <meta content="description" name="description">
+  <meta name="google" content="notranslate" />
+  <meta content="Mashup templates have been developped by Orson.io team" name="author">
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  
+  <link href="./assets/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="./assets/favicon.ico" rel="icon">
+  <link rel="stylesheet" href="{% static 'css/common.css' %}">
+  <title>board</title>  
+
+  <link href="{% static 'main.97292821.css'%}" rel="stylesheet"></head>
+
+<body>
+
+ <!-- Add your content of header -->
+<header>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-collapse">
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <ul class="nav navbar-nav navbar-right">
+            <p>
+                <a href="join.html" class="btn btn-default navbar-btn" >회원가입</a>
+                <a href="login.html" class="btn btn-default navbar-btn" >로그인</a>
+            </p>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+Add your site or app content here -->
+<div class="background-image-container white-text-container" >
+	style="background-image: url('./assets/images/img-05.jpg')"> -->
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'index'%}" class="col-xs-12">
+                <h1>COOPERATIONIST</h1>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+		<!-- bodytext_area -->
+		<div class="bodytext_area box_inner">
+			<form action="#" class="minisrch_form">
+				<fieldset>
+					<legend>검색</legend>
+					<input type="text" class="tbox" title="검색어를 입력해주세요" placeholder="검색어를 입력해주세요">
+					<a href="javascript:;" class="btn_srch">검색</a>
+				</fieldset>
+            </form>
+            
+			<table class="bbsListTbl" summary="번호,제목,조회수 등을 제공하는 표">
+				<caption class="hdd">목록</caption>
+				<thead>
+					<tr>
+						<th scope="col">번호</th>
+						<th scope="col">제목</th>
+						<th scope="col">내용보기</th>
+						<th scope="col">조회수</th>
+					</tr>
+                </thead>
+                
+				<tbody>
+					{% for content in contents %}
+					<form action="./moreView/" method="GET">
+						<tr>
+							<td>{{ content.id }}</td>
+							<td class="tit_notice"><a href="{% url 'moreView' %}">{{content.title}}</a> </td>   <!--href="url?id='{{o.id}}'"-->
+
+                            <td> <button type="submit" class="btn btn-default navbar-btn">내용보기</button> </td>
+                            
+                            <td class="tit_notice">{{content.cnt}}</a> </td>
+							
+							
+						
+						</tr>
+                    </form>
+					{% endfor %}
+					
+				</tbody>
+			</table>
+			<a href="{% url 'listForm' %}" class="btn btn-default navbar-btn" >글쓰기</a>
+			<!-- pagination -->
+			 <div class="pagination">
+				<!-- <a href="javascript:;" class="firstpage  pbtn"><img src="images/btn_firstpage.png" alt="첫 페이지로 이동"></a>
+				<a href="javascript:;" class="prevpage  pbtn"><img src="images/btn_prevpage.png" alt="이전 페이지로 이동"></a>
+				<a href="javascript:;"><span class="pagenum currentpage">1</span></a>
+				<a href="javascript:;"><span class="pagenum">2</span></a>
+				<a href="javascript:;"><span class="pagenum">3</span></a>
+				<a href="javascript:;"><span class="pagenum">4</span></a>
+				<a href="javascript:;"><span class="pagenum">5</span></a>
+				<a href="javascript:;" class="nextpage  pbtn"><img src="images/btn_nextpage.png" alt="다음 페이지로 이동"></a>
+				<a href="javascript:;" class="lastpage  pbtn"><img src="images/btn_lastpage.png" alt="마지막 페이지로 이동"></a> -->
+			</div> 
+			<!-- //pagination -->
+			
+		</div>
+		<!-- //bodytext_area -->
+
+	</div>
+	<!-- //container -->
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function (event) {
+    
+  googleMapInit(); 
+  scrollToAnchor();
+  scrollRevelation('reveal');
+});
+</script>
+
+<footer class="footer-container white-text-container">
+    <div class="container">
+        <div class="row">
+                <div class="col-md-4">
+                    <h4>About us</h4>
+                    <p>learning together</p>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>Do you like ? Share this !</h4>
+                    <div>
+                        <p>
+                            <a href="https://www.twitter.com" class="fa-icon" title="">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                            <a href="https://www.facebook.com" class="fa-icon" title="">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.linkedin.com" class="fa-icon" title="">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <p><small>© Untitled | Website created with <a href="http://www.mashup-template.com/" title="Create website with free html template">Mashup Template</a>/<a href="https://www.unsplash.com/" title="Beautiful Free Images">Unsplash</a></small></p>
+                    </div>
+
+                </div>
+
+                <!-- <div class="col-md-4">
+                        
+                    <h4>Subscribe to newsletter</h4>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control footer-input-text">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-newsletter ">OK</button>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div> -->
+        </div>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function (event) {
+  navbarToggleSidebar();
+});
+</script>
+
+
+<script type="text/javascript" src="./main.faaf51f9.js"></script>
