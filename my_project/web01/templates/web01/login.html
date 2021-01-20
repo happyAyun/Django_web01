@@ -1,4 +1,5 @@
 <!-- Add your content of head and header -->
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,9 +18,7 @@
   <link href="./assets/favicon.ico" rel="icon">
 
   <title>board</title>  
-
-<link href="./main.97292821.css" rel="stylesheet"></head>
-
+  <link href="{% static 'main.97292821.css'%}" rel="stylesheet"></head> 
 <body>
 
  <!-- Add your content of header -->
@@ -30,8 +29,8 @@
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <ul class="nav navbar-nav navbar-right">
             <p>
-                <a href="join.html" class="btn btn-default navbar-btn" >회원가입</a>
-                <a href="login.html" class="btn btn-default navbar-btn" >로그인</a>
+                <a href="{%url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
+                <a href="{%url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
             </p>
         </ul>
       </div>
@@ -46,7 +45,7 @@
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
-            <a href="index.html" class="col-xs-12">
+            <a href="{% url 'index'%}" class="col-xs-12">
                 <h1>COOPERATIONIST</h1>
             </a>
         </div>
@@ -63,7 +62,7 @@
                 <div class="section-container-spacer">
                     <h2 class="text-center">로그인</h2>
                 </div>
-                <form action="">
+                <form action="./userLogin/" method="POST">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -85,7 +84,12 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">로그인</button>
-                    <a href="join.html" class="btn btn-default">회원가입</a>
+                    
+                    <p>
+                        <br>
+                        <a href="{%url 'join'%}}" class="btn btn-default">회원가입</a>
+                        <a href="{%url 'index'%}" class="btn btn-default">홈으로</a>
+                    </p>
                 </form>
             </div>
         </div>

@@ -31,8 +31,8 @@
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <ul class="nav navbar-nav navbar-right">
             <p>
-                <a href="join.html" class="btn btn-default navbar-btn" >회원가입</a>
-                <a href="login.html" class="btn btn-default navbar-btn" >로그인</a>
+                <a href="{% url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
+                <a href="{% url 'login %}" class="btn btn-default navbar-btn" >로그인</a>
             </p>
         </ul>
       </div>
@@ -62,9 +62,11 @@
         <div class="row">
             <div class="col-xs-12 col-md-offset-2 col-md-8">
                 <div class="section-container-spacer">
-                    <h2 class="text-center">게시물 작성</h2>
+                    <h2 class="text-center">게시물 수정</h2>
                 </div>
-                <form action="./createList/" method="POST"> {% csrf_token %}
+                <form action="{%url 'updateView' %}" method="POST"> {% csrf_token %}
+                    <!-- <form action="./updateView/" method="POST"></form> -->
+                    <input type="hidden" name="id" value="{{content.id}}"/>
                     <div>
                     <div class="row">
                         <div class="col-md-6">
@@ -87,7 +89,7 @@
                     <div>
                         {{error}}
                     </div>
-                    <button type="submit" class="btn btn-primary">게시글 등록</button>
+                    <button type="submit" class="btn btn-primary">게시글 수정 등록</button>
                     <a href="{% url 'viewList' %}" class="btn btn-default">취소</a>
                 </div>
                 </form>

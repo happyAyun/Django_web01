@@ -6,5 +6,9 @@ class Content(models.Model):
     objects = models.Manager()
     title = models.CharField(max_length=105)
     context = models.CharField(max_length=225)
-    # date = models.DateField()   
     cnt = models.IntegerField(default=0)
+
+class User(models.Model):
+    objects = models.Manager()
+    user_id = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)

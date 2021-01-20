@@ -47,7 +47,7 @@
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
-            <a href="index.html" class="col-xs-12">
+            <a href="{% url 'index'%}" class="col-xs-12">
                 <h1>COOPERATIONIST</h1>
             </a>
         </div>
@@ -56,19 +56,21 @@
 
 
     <!-- bodytext_area -->
-    <form action="" method="GET">
+    <form action="" method="GET"> {% csrf_token %}
+        <input type="hidden" name="id" value="{{content.id}}" />
     <div class="bodytext_area box_inner">			
         <ul class="bbsview_list">
             <li class="bbs_title"> {{ content.title }} </li>
-            <!-- <li class="bbs_hit">작성일 : <span>2018.08.09</span></li>
-            <li class="bbs_date">조회수 : <span>235</span></li> -->
+            <li class="bbs_date">조회수 : <span>{{content.cnt}}</span></li> 
             <li class="bbs_content">
                 <div class="editer_content">
                     {{ content.context }}
                 </div>
             </li>
         </ul>
-        <a href="url?id='{{content.id}}'" class="btn btn-default navbar-btn" >글 제거</a>
+        
+        <a href="./deleteList/?id={{content.id}}" class="btn btn-default navbar-btn" >글 삭제</a>
+        <a href="./updateList/?id={{content.id}}" class="btn btn-default navbar-btn" >글 수정</a>
         <p class="btn_line txt_right">
             <a href="{% url 'viewList' %}" class="btn_bbs">목록</a>
         </p>

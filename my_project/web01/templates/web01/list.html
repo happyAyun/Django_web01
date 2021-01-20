@@ -59,11 +59,14 @@ Add your site or app content here -->
 
 		<!-- bodytext_area -->
 		<div class="bodytext_area box_inner">
-			<form action="#" class="minisrch_form">
+			<form action="./listSearch/" method="GET" class="minisrch_form">
+                {% csrf_token %}
 				<fieldset>
 					<legend>검색</legend>
-					<input type="text" class="tbox" title="검색어를 입력해주세요" placeholder="검색어를 입력해주세요">
-					<a href="javascript:;" class="btn_srch">검색</a>
+					<input type="text" name="text" class="tbox" title="검색어를 입력해주세요" placeholder="검색어를 입력해주세요">
+                    <!-- <a href="{%url 'listSearch'%}" class="btn_srch">검색</a> -->
+                    <button type="submit" class="btn_srch">검색</button>
+                    
 				</fieldset>
             </form>
             
@@ -79,21 +82,25 @@ Add your site or app content here -->
                 </thead>
                 
 				<tbody>
-					{% for content in contents %}
-					<form action="./moreView/" method="GET">
-						<tr>
-							<td>{{ content.id }}</td>
-							<td class="tit_notice"><a href="{% url 'moreView' %}">{{content.title}}</a> </td>   <!--href="url?id='{{o.id}}'"-->
 
-                            <td> <button type="submit" class="btn btn-default navbar-btn">내용보기</button> </td>
-                            
-                            <td class="tit_notice">{{content.cnt}}</a> </td>
-							
-							
-						
-						</tr>
+					{% for content in contents %}
+                    <form action="./moreView/?id={{content.id}}" method="GET">
+                        <!-- <form action="./moreView/?id=id" method="GET"> 도 가능 -->
+                        <!-- <form action="./moreView/" method="GET"></form> -->
+                        <input type="hidden" name="id" value="{{content.id}}" />
+                        <div name='content'>
+                            <tr>
+                                <td>{{ content.id }}</td>
+                                <td class="tit_notice">{{content.title}}</td>   
+                                <!--href="url?id='{{o.id}}'"-->
+                                
+                                <td> <button type="submit" class="btn btn-default navbar-btn">내용보기</button> </td>
+                                
+                                <td class="tit_notice">{{content.cnt}}</a> </td>
+                            </tr>
+                        </div>
                     </form>
-					{% endfor %}
+					{% endfor %} 
 					
 				</tbody>
 			</table>
@@ -156,22 +163,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     </div>
 
                 </div>
-
-                <!-- <div class="col-md-4">
-                        
-                    <h4>Subscribe to newsletter</h4>
-                    
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control footer-input-text">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-newsletter ">OK</button>
-                            </div>
-                        </div>
-                        
-                        
-                    </div>
-                </div> -->
         </div>
     </div>
 </footer>

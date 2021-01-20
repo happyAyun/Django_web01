@@ -1,4 +1,5 @@
 <!-- Add your content of head and header -->
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +19,7 @@
 
   <title>board</title>  
 
-<link href="./main.97292821.css" rel="stylesheet"></head>
+<link href="{% static 'main.97292821.css' %}" rel="stylesheet"></head>
 
 <body>
 
@@ -30,8 +31,8 @@
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <ul class="nav navbar-nav navbar-right">
             <p>
-                <a href="join.html" class="btn btn-default navbar-btn" >회원가입</a>
-                <a href="login.html" class="btn btn-default navbar-btn" >로그인</a>
+                <a href="{% url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
+                <a href="{% url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
             </p>
         </ul>
       </div>
@@ -46,13 +47,12 @@
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
-            <a href="index.html" class="col-xs-12">
+            <a href="{% url 'index'%}" class="col-xs-12">
                 <h1>COOPERATIONIST</h1>
             </a>
         </div>
     </div>
 </div>
-
 
 
 <div class="section-container" id="contact-section-container">
@@ -62,24 +62,30 @@
                 <div class="section-container-spacer">
                     <h2 class="text-center">회원가입</h2>
                 </div>
-                <form action="" method="POST">
+                <form action="./userJoin/" method="POST">
+                    {%csrf_token%}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="id" name="id" class="form-control" placeholder="아이디">
+                                <input type="id" name="user_id" class="form-control" placeholder="아이디">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="password" name="password" class="form-control" placeholder="비밀번호">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호">
                             </div>
                         </div>
                         <div class="col-md-6">
+                            {{error}}
+                            {{pw_error}}
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="password" name="passwordCheck" class="form-control" placeholder="비밀번호확인">
+                                <input type="password" id ="password2" name="password2" class="form-control" placeholder="비밀번호확인">
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            
                         </div>
                         <!-- <div class="col-md-6">
                             <div class="form-group">
@@ -95,7 +101,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">회원가입</button>
-                    <a href="index.html" class="btn btn-default">취소</a>
+                    <a href="{% url 'index' %}" class="btn btn-default">취소</a>
                 </form>
             </div>
         </div>
