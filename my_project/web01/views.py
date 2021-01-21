@@ -4,12 +4,12 @@ from django.urls import reverse
 from django.db.models import Q
 from .forms import ContentForm
 from .models import Content, User
-
-
+from django.contrib.auth.hashers import check_password
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 def index(request):
-    # contents = Content.objects.all()
     return render(request,"web01/index.html")
 
 def listForm(request):
@@ -22,6 +22,8 @@ def join(request):
     return render(request,"web01/join.html")
 
 def createList(request):
+    if request.session['user']:
+        return HttpResponse(request.session['user'])
     title = request.POST.get('title',None)
     context = request.POST.get('context',None)
     res_data = {}
@@ -37,11 +39,9 @@ def createList(request):
         contents = Content.objects.all()
         return render(request,"web01/list.html", {'contents':contents})
 
-
 def viewList(request):
     contents = Content.objects.all()
     return render(request,"web01/list.html", {'contents':contents})
-
 
 def moreView(request): 
     get_id = request.GET['id']
@@ -106,7 +106,30 @@ def userJoin(request):
         )
         user.save()
         return HttpResponseRedirect(reverse("login"))
-        
 
+def userLogin(request):
+    get_id = request.POST.get('user_id',None)
+    get_pw = request.POST.get('password',None)
+    res_data = {}
+    if not (get_id and get_pw):
+        res_data['error'] = "모든 항목을 입력하여 주십시오."
+        return render(request,'web01/login.html', res_data)
+    else:
+        users = User.objects.all()
+        for u in users:
+            if u.user_id == get_id:
+                user = u
+                if get_pw == user.password:
+                    request.session['user'] = user.user_id
+                    return HttpResponseRedirect('/')
+                else:
+                    res_data['error'] = "비밀번호를 다시 확인해주십시요." 
+                    return render(request,'web01/login.html',res_data)
+        res_data['error'] = "해당 아이디가 존재하지 않습니다."
+        return render(request,'web01/login.html', res_data)
 
+def logout(request):
+    if request.session['user']:
+        del request.session['user']
+    return HttpResponseRedirect('/')
 

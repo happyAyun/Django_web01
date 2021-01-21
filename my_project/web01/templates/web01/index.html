@@ -30,11 +30,21 @@
     <div class="container">
       <div class="navbar-collapse">
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <ul class="nav navbar-nav navbar-right">
-            <p>
-                <a href="{% url 'join' %}" class="btn btn-default navbar-btn" >회원가입</a>
-                <a href="{% url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
-            </p>
+        <ul class="nav navbar-nav navbar-right white-text-container">
+           
+            {% if request.session.user %}
+                <p>
+                    <h4> {{ request.session.user }} 님, 환영합니다.</h4>
+                    <a href="{%url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
+                    <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a>
+                </p>
+            {% else %} 
+                <p>
+                    <a href="{% url 'join' %}" class="btn btn-default navbar-btn" >회원가입</a>
+                    <a href="{% url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
+                </p>
+            {% endif %}
+             
         </ul>
       </div>
     </div>
