@@ -1,71 +1,6 @@
-<!-- Add your content of head and header -->
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'web01/base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width,initial-scale=1" name="viewport">
-  <meta content="description" name="description">
-  <meta name="google" content="notranslate" />
-  <meta content="Mashup templates have been developped by Orson.io team" name="author">
-
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-  
-  <link href="./assets/apple-touch-icon.png" rel="apple-touch-icon">
-  <link href="./assets/favicon.ico" rel="icon">
-  <link rel="stylesheet" href="{% static 'css/common.css' %}">
-  <title>board</title>  
-
-  <link href="{% static 'main.97292821.css'%}" rel="stylesheet"></head>
-
-<body>
-
- <!-- Add your content of header -->
-<header>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-collapse">
-        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <ul class="nav navbar-nav navbar-right white-text-container">
-           
-            {% if request.session.user %}
-                <p>
-                    <h4> {{ request.session.user }} 님, 환영합니다.</h4>
-                    <a href="{%url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
-                    <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a>
-                </p>
-            {% else %} 
-                <p>
-                    <a href="{% url 'join' %}" class="btn btn-default navbar-btn" >회원가입</a>
-                    <a href="{% url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
-                </p>
-            {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
-
-
-
-Add your site or app content here -->
-<div class="background-image-container white-text-container" >
-	style="background-image: url('./assets/images/img-05.jpg')"> -->
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <a href="{% url 'index'%}" class="col-xs-12">
-                <h1>COOPERATIONIST</h1>
-            </a>
-        </div>
-    </div>
-</div>
-
-
-
+{% block content %}
 		<!-- bodytext_area -->
 		<div class="bodytext_area box_inner">
 			<form action="./listSearch/" method="GET" class="minisrch_form">
@@ -85,7 +20,7 @@ Add your site or app content here -->
 					<tr>
 						<th scope="col">번호</th>
 						<th scope="col">제목</th>
-						<th scope="col">내용보기</th>
+						<th scope="col">작성자</th>
 						<th scope="col">조회수</th>
 					</tr>
                 </thead>
@@ -93,18 +28,17 @@ Add your site or app content here -->
 				<tbody>
 
 					{% for content in contents %}
-                    <form action="./moreView/?id={{content.id}}" method="GET">
-                        <!-- <form action="./moreView/?id=id" method="GET"> 도 가능 -->
-                        <!-- <form action="./moreView/" method="GET"></form> -->
+					<form action="./moreView/?id={{content.id}}" method="GET">
+						{% csrf_token %}
                         <input type="hidden" name="id" value="{{content.id}}" />
+                        <!-- <input type="hidden" name="u_id" value="{{user.user_id}}" />  -->
                         <div name='content'>
                             <tr>
                                 <td>{{ content.id }}</td>
-                                <td class="tit_notice">{{content.title}}</td>   
+								<td class="tit_notice"><a href="./moreView/?id={{content.id}}">{{content.title}}</a></td>   
                                 <!--href="url?id='{{o.id}}'"-->
                                 
-                                <td> <button type="submit" class="btn btn-default navbar-btn">내용보기</button> </td>
-                                
+                                <td class="tit_notice">{{content.userId.user_id}}</a> </td>
                                 <td class="tit_notice">{{content.cnt}}</a> </td>
                             </tr>
                         </div>
@@ -134,53 +68,4 @@ Add your site or app content here -->
 	</div>
 	<!-- //container -->
 
-
-<script>
-document.addEventListener("DOMContentLoaded", function (event) {
-    
-  googleMapInit(); 
-  scrollToAnchor();
-  scrollRevelation('reveal');
-});
-</script>
-
-<footer class="footer-container white-text-container">
-    <div class="container">
-        <div class="row">
-                <div class="col-md-4">
-                    <h4>About us</h4>
-                    <p>learning together</p>
-                </div>
-
-                <div class="col-md-4">
-                    <h4>Do you like ? Share this !</h4>
-                    <div>
-                        <p>
-                            <a href="https://www.twitter.com" class="fa-icon" title="">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                            <a href="https://www.facebook.com" class="fa-icon" title="">
-                                <i class="fa fa-facebook" aria-hidden="true"></i>
-                            </a>
-                            <a href="https://www.linkedin.com" class="fa-icon" title="">
-                                <i class="fa fa-linkedin" aria-hidden="true"></i>
-                            </a>
-                        </p>
-                    </div>
-                    <div>
-                        <p><small>© Untitled | Website created with <a href="http://www.mashup-template.com/" title="Create website with free html template">Mashup Template</a>/<a href="https://www.unsplash.com/" title="Beautiful Free Images">Unsplash</a></small></p>
-                    </div>
-
-                </div>
-        </div>
-    </div>
-</footer>
-
-<script>
-document.addEventListener("DOMContentLoaded", function (event) {
-  navbarToggleSidebar();
-});
-</script>
-
-
-<script type="text/javascript" src="./main.faaf51f9.js"></script>
+    {% endblock %}

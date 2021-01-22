@@ -2,6 +2,7 @@
 <!-- Add your content of head and header -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -13,9 +14,9 @@
   <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
   
-  <link href="'./assets/apple-touch-icon.png'" rel="apple-touch-icon">
-  <link href="./assets/favicon.ico'" rel="icon">
-
+  <link href="{% static 'assets/apple-touch-icon.png'%}" rel="apple-touch-icon">
+  <link href="{%static 'assets/favicon.ico'%}" rel="icon">
+  <link rel="stylesheet" href="{% static 'css/common.css' %}">
   <title>TOGETHER</title>  
 
 
@@ -30,11 +31,20 @@
       <div class="navbar-collapse">
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <ul class="nav navbar-nav navbar-right white-text-container">
-            <p>
-                <h4> {{ request.session.user }} 님, 환영합니다.</h4>
-                <a href="{%url 'join'%}" class="btn btn-default navbar-btn" >회원가입</a>
-                <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a>
-            </p>
+           
+            {% if request.session.user %}
+                <p>
+                    <h4> {{ request.session.user }} 님, 환영합니다.</h4>
+                    <a href="{%url 'join'%}" class="btn btn-default navbar-btn" >마이페이지</a>
+                    <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a>
+                </p>
+            {% else %} 
+                <p>
+                    <a href="{% url 'join' %}" class="btn btn-default navbar-btn" >회원가입</a>
+                    <a href="{% url 'login'%}" class="btn btn-default navbar-btn" >로그인</a>
+                </p>
+            {% endif %}
+             
         </ul>
       </div>
     </div>
@@ -42,44 +52,23 @@
 </header>
 
 
-
-    <!-- Add your site or app content here -->
-<div class="background-image-container white-text-container" style="background-image: url('./assets/images/img-05.jpg')">
+ <!-- Add your site or app content here -->
+ <div class="background-image-container white-text-container" >
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
                 <a href="{% url 'index'%}" class="col-xs-12">
                     <h1>COOPERATIONIST</h1>
                 </a>
-                <p class="">It will be even better if we share it together.</p>
+                <p class="nav navbar-nav navbar-right white-text-container">It will be even better if we share it together.</p>
             </div>
         </div>
     </div>
 </div>
 
-
-<div class="section-container section-half-background-image-container">
-    <div class="image-column"></div>
-    <div class="container">
-        <div class="row">
-            <div class="section-label reveal">
-                <p>COOPERATION</p>
-            </div>
-            <div class="col-md-6 col-md-offset-6 text-column">
-                <h2>About Website</h2>
-                <h3>COOPERATIONIST</h3>
-                <p>이 웹사이트는 내가 아는 지식을 다른 사람과 공유하고 나누는 공간입니다.</p>
-                <p>또한, 내가 모르는 것을 다른 이에게 물어보며 배우는 공간입니다.</p>
-                <p>우리 모두는 함께할 때 빛이 납니다.</p>
-            
-                <a href="{% url 'viewList' %}" class="btn btn-default navbar-btn" >게시판 이동하기</a>
-            </div>
-            
-        </div>
-    </div>
-</div>
-</body>
-</html>
+ 
+{% block content %}
+{% endblock %}
 
 
 <!-- <div class="section-container">
@@ -188,13 +177,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     <div>
                         <p>
                             <a href="https://www.twitter.com" class="fa-icon" title="">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
                             <a href="https://www.facebook.com" class="fa-icon" title="">
                                 <i class="fa fa-facebook" aria-hidden="true"></i>
                             </a>
-                            <a href="https://www.linkedin.com" class="fa-icon" title="">
-                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            <a href="https://www.instagram.com" class="fa-icon" title="">
+                                <i class="fa fa-instagram" aria-hidden="true"></i>
                             </a>
                         </p>
                     </div>
@@ -204,7 +193,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 </div>
 
-               
+                <!-- <div class="col-md-4">
+                        
+                    <h4>Subscribe to newsletter</h4>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control footer-input-text">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-newsletter ">OK</button>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div> -->
         </div>
     </div>
 </footer>
@@ -216,4 +219,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 
 
-<script type="text/javascript" src="./main.faaf51f9.js"></script>
+<script type="text/javascript" src="{%static 'main.faaf51f9.js'%}"></script>

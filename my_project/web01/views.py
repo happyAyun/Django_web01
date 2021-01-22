@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.db.models import Q
 from .forms import ContentForm
-from .models import Content, User
+from .models import Content, User, Reply
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -23,22 +23,27 @@ def join(request):
     return render(request,"web01/join.html")
 
 def createList(request):
-    if request.session['user']:
-        return HttpResponse(request.session['user'])
-    title = request.POST.get('title',None)
-    context = request.POST.get('context',None)
-    res_data = {}
-    if not (title and context):
-        res_data['error']="모든 항목을 입력하세요."
-        return render(request,'web01/form.html',res_data)
-    else :
-        content = Content(
-            title=title,
-            context=context
-        )
-        content.save()
-        contents = Content.objects.all()
-        return render(request,"web01/list.html", {'contents':contents})
+    if request.session.get('user'):
+        u = request.session.get('user')
+        title = request.POST.get('title',None)
+        context = request.POST.get('context',None)
+        res_data = {}
+        if not (title and context):
+            res_data['error']="모든 항목을 입력하세요."
+            return render(request,'web01/form.html',res_data)
+        else :
+            user = User.objects.get(user_id = u)
+            content = Content(
+                title=title,
+                context=context,
+                userId=user
+            )
+            content.save()
+            contents = Content.objects.all()
+            return render(request,"web01/list.html", {'contents':contents,'user_id':user.user_id})
+    else:
+        return render(request,'web01/form.html',{'not_login' : True})
+
 
 def viewList(request):
     contents = Content.objects.all()
@@ -47,6 +52,7 @@ def viewList(request):
 def moreView(request): 
     get_id = request.GET['id']
     content = Content.objects.get(id = get_id)
+    # return HttpResponse(content.userId.user_id) ###유레카
     cnt = content.cnt
     content.cnt = cnt + 1
     content.save()
@@ -147,3 +153,22 @@ def logout(request):
         del request.session['user']
     return HttpResponseRedirect('/')
 
+def createReply(request):
+    if request.session.get('user'):
+        context = request.POST.get('context',None)
+        content_id = request.POST.get('content.id',None)
+        if not (context and content_id):
+            return render(request,'web01/view.html',{'not_write':True})
+        
+        get_user = request.session['user']
+        content = Content.objects.get(id = content_id)
+        reply = Reply(
+            user = get_user,
+            replyCon = context,
+            originalCon = content
+        )
+        reply.save()
+        replies = Reply.objects.all()
+        return render(request,'web01/view.html',{'content':content,'replies':replies})
+    else:
+        return render(request,'web01/view.html',{'not_login':True})
