@@ -52,11 +52,10 @@ def viewList(request):
 def moreView(request): 
     get_id = request.GET['id']
     content = Content.objects.get(id = get_id)
-    # return HttpResponse(content.userId.user_id) ###유레카
-    cnt = content.cnt
-    content.cnt = cnt + 1
+    replies = Reply.objects.filter(originalCon=content)
+    content.cnt = content.cnt + 1
     content.save()
-    return render(request,"web01/view.html",{'content':content})
+    return render(request,"web01/view.html",{'content':content,'replies':replies})
 
 def deleteList(request):
     get_id = request.GET['id']
@@ -158,7 +157,8 @@ def createReply(request):
         context = request.POST.get('context',None)
         content_id = request.POST.get('content.id',None)
         if not (context and content_id):
-            return render(request,'web01/view.html',{'not_write':True})
+            return HttpResponseRedirect(request,'moreView',{'not_write':True})
+            # return render(request,'web01/view.html',{'not_write':True})
         
         get_user = request.session['user']
         content = Content.objects.get(id = content_id)
@@ -171,4 +171,4 @@ def createReply(request):
         replies = Reply.objects.all()
         return render(request,'web01/view.html',{'content':content,'replies':replies})
     else:
-        return render(request,'web01/view.html',{'not_login':True})
+        return render(request,'web01/login.html',{'not_login':True})
