@@ -172,3 +172,12 @@ def createReply(request):
         return render(request,'web01/view.html',{'content':content,'replies':replies})
     else:
         return render(request,'web01/login.html',{'not_login':True})
+
+def deleteReply(request):
+    get_id = request.POST.get('id',None)
+    get_cId = request.POST.get('c_id',None)
+    reply = Reply.objects.get(id = get_id)
+    reply.delete()
+    replies = Reply.objects.all()
+    content = Content.objects.get(id = get_cId)
+    return render(request,'web01/view.html',{'content':content, 'replies':replies})

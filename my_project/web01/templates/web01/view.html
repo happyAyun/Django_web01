@@ -37,7 +37,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <input type="hidden" name="content.id" value="{{content.id}}"/>
-                <textarea class="form-control" rows="3" name="context" placeholder="답글을 달아주세요."></textarea>
+                <textarea class="form-control" rows="3" name="context" placeholder="답글을 달아주세요. 로그인 후 이용이 가능합니다."></textarea>
             </div>
             <div>
                 {{error}}
@@ -56,19 +56,23 @@
                     <th scope="col">번호</th>
                     <th scope="col">답글내용</th>
                     <th scope="col">작성자</th>
+                    <th scope="col">수정/삭제</th>
                 </tr>
             </thead>
             
             <tbody>
                 {% for reply in replies %}
-                <!-- <form action="./moreView/?id={{content.id}}" method="GET"> -->
-                <form action=".//" method="POST">
-                    <input type="hidden" name="id" value="{{content.id}}" />
+                <form action="./deleteReply/" method="POST">
+                    <!-- <form action="./deleteReply/?id={{reply.id}}" method="POST"></form> -->
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{reply.id}}" />
+                    <input type="hidden" name="c_id" value="{{content.id}}" />
                     <div name='content'>
                         <tr>
                             <td>{{ reply.id }}</td>
                             <td class="tit_notice">{{reply.replyCon}}</a> </td>
-                            <td class="tit_notice">{{reply.user}}</td>   
+                            <td class="tit_notice">{{reply.user}}</td> 
+                            <td class="tit_notice"><button type="submit" class="btn btn-primary">수정</button><button type="submit" class="btn btn-default">삭제</button>
                             <!--href="url?id='{{o.id}}'"-->
                         </tr>
                     </div>

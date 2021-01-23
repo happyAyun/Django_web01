@@ -32,4 +32,6 @@ urlpatterns = [
     re_path(r'logout/$', views.logout, name="logout"),
 
     re_path(r'createReply/$', views.createReply, name="createReply"),
+
+    re_path(r'deleteReply/$', views.deleteReply, name="deleteReply"),
 ]
