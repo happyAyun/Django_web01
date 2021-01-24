@@ -34,4 +34,14 @@ urlpatterns = [
     re_path(r'createReply/$', views.createReply, name="createReply"),
 
     re_path(r'deleteReply/$', views.deleteReply, name="deleteReply"),
+
+    re_path(r'myPage/$', views.myPage, name="myPage"),
+
+    re_path(r'pwChange/$', views.pwChange, name="pwChange"),
+
+    re_path(r'changePW/$', views.changePW, name="changePW"),
+
+    re_path(r'secession/$', views.secession, name="secession"),
+
+    re_path(r'myWriting/$', views.myWriting, name="myWriting"),
 ]

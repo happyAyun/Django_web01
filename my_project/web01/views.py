@@ -181,3 +181,55 @@ def deleteReply(request):
     replies = Reply.objects.all()
     content = Content.objects.get(id = get_cId)
     return render(request,'web01/view.html',{'content':content, 'replies':replies})
+
+def myPage(request):
+    return render(request, 'web01/myPage.html')
+
+def pwChange(request):
+    return render(request, 'web01/pwChange.html')
+
+def changePW(request):
+    pw = request.POST.get('password',None)
+    pw1 = request.POST.get('re_pw',None)
+    pw2 = request.POST.get('re_pw2',None)
+    res_data={}
+    if not (pw and pw1 and pw2):
+        res_data['error'] = '모든 항목을 입력하여 주십시요.'
+        return render(request, 'web01/pwChange.html',res_data)
+    
+    user = request.session['user']
+    user = User.objects.get(user_id = user)
+    if bcrypt.checkpw(pw.encode('utf-8'), user.password.encode('utf-8')):
+        if pw1 != pw2:
+            res_data['error'] = '변경할 비밀번호 입력이 서로 다릅니다.'
+            return render(request, 'web01/pwChange.html',res_data)
+        else:
+            pw1 = pw1.encode('utf-8')
+            pw1 = bcrypt.hashpw(pw1, bcrypt.gensalt())
+            pw1 = pw1.decode('utf-8')
+            user.password = pw1
+            user.save()
+            return render(request, 'web01/myPage.html', {'pw_change':True})
+
+    else:
+        res_data['error'] = '현재의 비밀번호가 일치하지 않습니다.'
+        return render(request, 'web01/pwChange.html',res_data)
+
+def secession(request):
+    return render(request,'web01/secession.html')
+
+def myWriting(request):
+    user = request.session['user']
+    user = User.objects.get(user_id=user)
+    contents = Content.objects.all().filter(userId=user)
+    return render(request, 'web01/myWriting.html', {'contents':contents})
+
+def resetJoin(request):
+    user = request.session['user']
+    user = User.objects.get(user_id=user)
+    user.delete()
+    del request.session['user']
+    return HttpResponseRedirect('/')
+    
+
+    

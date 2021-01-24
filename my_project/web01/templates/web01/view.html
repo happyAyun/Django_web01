@@ -24,15 +24,13 @@
             </li>
         </ul>
         
-        <a href="./deleteList/?id={{content.id}}" class="btn btn-default navbar-btn" >글 삭제</a>
-        <a href="./updateList/?id={{content.id}}" class="btn btn-default navbar-btn" >글 수정</a>
         <p class="btn_line txt_right">
             <a href="{% url 'viewList' %}" class="btn_bbs">목록</a>
         </p>
     </form>
         
      <!-- 답글 영역 -->
-        <br><br><br>
+        <br>
         <form action="./createReply/" method="POST"> 
             {% csrf_token %}
             <div class="form-group">
@@ -46,17 +44,19 @@
             <a href="{% url 'viewList' %}" class="btn btn-default">취소</a>
         </form>
         
-        <table class="bbsListTbl" summary="번호,제목,조회수 등을 제공하는 표">
+         <!-- 답글리스트 -->
+
+        <table class="bbsListTbl">
             <caption class="hdd">목록</caption>
 
-            <!-- 답글리스트 -->
+           
         <br><br><br>
             <thead>
                 <tr>
                     <th scope="col">번호</th>
                     <th scope="col">답글내용</th>
                     <th scope="col">작성자</th>
-                    <th scope="col">수정/삭제</th>
+                    <th scope="col">기타</th>
                 </tr>
             </thead>
             
@@ -72,7 +72,12 @@
                             <td>{{ reply.id }}</td>
                             <td class="tit_notice">{{reply.replyCon}}</a> </td>
                             <td class="tit_notice">{{reply.user}}</td> 
-                            <td class="tit_notice"><button type="submit" class="btn btn-primary">수정</button><button type="submit" class="btn btn-default">삭제</button>
+                            {{% if reply.user == request.session['user'] %}}
+                                <td class="tit_notice">
+                                    <button type="submit" class="btn btn-primary">수정</button>
+                                    <button type="submit" class="btn btn-default">삭제</button>
+                                </td>
+                            {{% endif %}}
                             <!--href="url?id='{{o.id}}'"-->
                         </tr>
                     </div>

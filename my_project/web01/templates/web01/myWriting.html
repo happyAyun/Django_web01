@@ -1,0 +1,56 @@
+{% extends 'web01/base.html' %}
+
+{% block content %}
+
+<div class="section-container" id="contact-section-container">
+    <div class="container contact-form-container">
+        <div class="row">
+            <div class="col-xs-12 col-md-offset-2 col-md-8">
+                <div class="section-container-spacer">
+                    <h2 class="text-center">내가 쓴 글</h2>
+                </div>
+                <table class="bbsListTbl" summary="번호,제목,조회수 등을 제공하는 표">
+                    <caption class="hdd">목록</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">조회수</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+    
+                        {% for content in contents %}
+                        <form action="./moreView/?id={{content.id}}" method="GET">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{content.id}}" />
+                            <!-- <input type="hidden" name="u_id" value="{{user.user_id}}" />  -->
+                            <div name='content'>
+                                <tr>
+                                    <td>{{ content.id }}</td>
+                                    <td class="tit_notice"><a href="./moreView/?id={{content.id}}">{{content.title}}</a></td>   
+                                    <!--href="url?id='{{o.id}}'"-->
+                                    
+                                    <td class="tit_notice">{{content.userId.user_id}}</a> </td>
+                                    <td class="tit_notice">{{content.cnt}}</a> </td>
+                                </tr>
+                            </div>
+                        </form>
+                        {% endfor %} 
+                        
+                    </tbody>
+                </table>
+                    
+                    <p>
+                        <br>
+                        <a href="{%url 'myPage'%}" class="btn btn-default">마이페이지</a>
+                        <a href="{%url 'index'%}" class="btn btn-default">홈으로</a>
+                    </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

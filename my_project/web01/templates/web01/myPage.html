@@ -1,0 +1,66 @@
+{% extends 'web01/base.html' %}
+
+{% block content %}
+
+{% if pw_change %}
+    <script>
+        alert("비밀번호가 성공적으로 변경되었습니다.")
+    </script>
+{% endif %}
+<style>
+    .board {
+      padding-top: 50px;
+      padding-left: 75%;
+    }
+</style>
+<!-- <script>
+    var con_test = confirm("정말 회원 탈퇴를 하시겠습니까?");
+    if(con_test == true){
+        href='secession';
+        window.location.href;
+    }
+    else if(con_test == false){
+      document.write("취소를 누르셨군요.");
+    }
+</script> -->
+
+<div class="section-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-12 section-container-spacer">
+                <h2 class="text-center">마이페이지</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="fa-container">
+                    <i class="fa fa-comment-o fa-3x" aria-hidden="true"></i>
+                </div>
+                <h3 class="text-center"><a href="#" id="comfirm">회원탈퇴 </a></h3>
+                <p></p>
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                <div class="fa-container">
+                    <i class="fa fa-heart-o fa-3x" aria-hidden="true"></i>
+                </div>
+                <h3 class="text-center"><a href="{% url 'myWriting'%}">내가 작성한 글</a></h3>
+                <p></p>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="fa-container">
+                    <i class="fa fa-bell-o fa-3x" aria-hidden="true"></i>
+                </div>
+                <h3 class="text-center"><a href="{%url 'pwChange'%}">비밀번호 변경</a></h3>
+                <p> </p>
+            </div>
+        </div>
+    </div>
+    <p class="board">
+        <a href="{% url 'viewList' %}" class="btn btn-default navbar-btn">게시판 이동하기</a>
+    </p>
+</div> 
+
+
+
+{% endblock %}
