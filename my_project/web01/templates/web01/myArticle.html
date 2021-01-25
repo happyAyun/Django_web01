@@ -10,20 +10,12 @@
     <script>alert("작성하신 답글 내용이 없습니다.")</script>
 {% endif %}
 
-<script>
-    
-    function modify(context){
-        document.getElementById("showHide").style.display='none';
-        document.getElementById("two").innerHTML;
 
-        // document.getElementsById("modify_div").style.display='block';
-    }
-</script>
 
     <!-- bodytext_area -->
     <br><br>
         <div class="section-container-spacer">
-            <h2 class="text-center">해당 글 보기</h2>
+            <h2 class="text-center">내가 작성한 글</h2>
         </div>
     <form action="" method="GET"> {% csrf_token %}
         <input type="hidden" name="id" value="{{content.id}}" />
@@ -38,29 +30,15 @@
                 </div>
             </li>
         </ul>
-        <!-- <a href="./deleteList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 삭제</a>
-        <a href="./updateList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 수정</a> -->
+        <a href="./deleteList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 삭제</a>
+        <a href="./updateList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 수정</a>
         
         <p class="btn_line txt_right">
             <a href="{% url 'viewList' %}" class="btn_bbs">목록</a>
         </p>
     </form>
         
-     <!-- 답글 영역 -->
-        <br>
-        <form action="./createReply/" method="POST"> 
-            {% csrf_token %}
-            <div class="form-group">
-                <input type="hidden" name="content.id" value="{{content.id}}"/>
-                <textarea class="form-control" rows="3" name="context" placeholder="답글을 달아주세요. 로그인 후 이용이 가능합니다."></textarea>
-            </div>
-            <div>
-                {{error}}
-            </div>
-            <button type="submit" class="btn btn-primary">등록</button>
-            <a href="{% url 'viewList' %}" class="btn btn-default">취소</a>
-        </form>
-        
+     
          <!-- 답글리스트 -->
 
         <table class="bbsListTbl">
@@ -79,28 +57,27 @@
             
             <tbody>
                 {% for reply in replies %}
-                <form action="./deleteReply/" method="POST" name="replyform">
-                    <!-- replyform.context.value -->
+                <form action="./myDeleteReply/" method="POST">
+                    <!-- <form action="./deleteReply/?id={{reply.id}}" method="POST"></form> -->
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{reply.id}}" />
                     <input type="hidden" name="c_id" value="{{content.id}}" />
-                    <div name='content' id="two">
-                        <tr id="showHide">
+                    <div name='content'>
+                        <tr id = "showHide">
                             <td>{{ reply.id }}</td>
-                            <td class="tit_notice"> 
-                                {{reply.replyCon}}
-                                <div id="modify_div" >
-                                    <!-- <textarea class="form-control" rows="3" name="context">{{reply.replyCon}}</textarea> -->
-                                </div>
-                            </td>
+                            <td class="tit_notice">{{reply.replyCon}}</a> </td>
                             <td class="tit_notice">{{reply.user}}</td> 
-                            {% if user == reply.user %}
-                                <td class="tit_notice" >
+                            <td class="tit_notice" >
+                                {% if user == reply.user %}
                                     <a href="#" onclick="modify('{{reply.replyCon}}')" class="btn btn-primary">수정</a>
-                                    <button type="submit" class="btn btn-default">삭제</button>
-                                </td>
-                            {% endif %}
+                                {% endif %}
+                                <button type="submit" class="btn btn-default">삭제</button>
+                            </td>
+                            
+                            
                             <!--href="url?id='{{o.id}}'"-->
+                        </tr>
+                        
                         </tr>
                     </div>
                 </form>

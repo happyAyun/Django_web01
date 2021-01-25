@@ -51,11 +51,15 @@ def viewList(request):
 
 def moreView(request): 
     get_id = request.GET['id']
+    if request.session.get('user'):
+        get_user = request.session['user']
+    else:
+        get_user = None
     content = Content.objects.get(id = get_id)
     replies = Reply.objects.filter(originalCon=content)
     content.cnt = content.cnt + 1
     content.save()
-    return render(request,"web01/view.html",{'content':content,'replies':replies})
+    return render(request,"web01/view.html",{'content':content,'replies':replies, 'user':get_user})
 
 def deleteList(request):
     get_id = request.GET['id']
@@ -156,20 +160,20 @@ def createReply(request):
     if request.session.get('user'):
         context = request.POST.get('context',None)
         content_id = request.POST.get('content.id',None)
-        if not (context and content_id):
-            return HttpResponseRedirect(request,'moreView',{'not_write':True})
-            # return render(request,'web01/view.html',{'not_write':True})
-        
-        get_user = request.session['user']
         content = Content.objects.get(id = content_id)
+        replies = Reply.objects.all().filter(originalCon=content_id)
+        get_user = request.session['user']
+        if not context:
+            return render(request,'web01/view.html',{'not_write':True, 'content':content, 'replies':replies, 'user':get_user})
+        
         reply = Reply(
             user = get_user,
             replyCon = context,
             originalCon = content
         )
         reply.save()
-        replies = Reply.objects.all()
-        return render(request,'web01/view.html',{'content':content,'replies':replies})
+        replies = Reply.objects.all().filter(originalCon=content_id)
+        return render(request,'web01/view.html',{'content':content,'replies':replies,'user':get_user})
     else:
         return render(request,'web01/login.html',{'not_login':True})
 
@@ -180,7 +184,20 @@ def deleteReply(request):
     reply.delete()
     replies = Reply.objects.all()
     content = Content.objects.get(id = get_cId)
-    return render(request,'web01/view.html',{'content':content, 'replies':replies})
+    if request.session.get('user'):
+        get_user = request.session.get('user')
+    return render(request,'web01/view.html',{'content':content, 'replies':replies, 'user':get_user})
+
+def myDeleteReply(request):
+    get_id = request.POST.get('id',None)
+    get_cId = request.POST.get('c_id',None)
+    reply = Reply.objects.get(id = get_id)
+    reply.delete()
+    replies = Reply.objects.all()
+    content = Content.objects.get(id = get_cId)
+    if request.session.get('user'):
+        get_user = request.session.get('user')
+    return render(request,'web01/myArticle.html',{'content':content, 'replies':replies, 'user':get_user})
 
 def myPage(request):
     return render(request, 'web01/myPage.html')
@@ -224,12 +241,35 @@ def myWriting(request):
     contents = Content.objects.all().filter(userId=user)
     return render(request, 'web01/myWriting.html', {'contents':contents})
 
-def resetJoin(request):
+def resetUser(request):
+    pw = request.POST.get('password',None)
+    res_data = {}
+    if not pw:
+        res_data['error'] = '비밀번호를 입력하여 주세요.'
+        return render(request,'web01/secession.html',res_data)
+
     user = request.session['user']
     user = User.objects.get(user_id=user)
-    user.delete()
-    del request.session['user']
-    return HttpResponseRedirect('/')
+    if bcrypt.checkpw(pw.encode('utf-8'), user.password.encode('utf-8')):
+        user.delete()
+        del request.session['user']
+        return render(request,'web01/index.html',{'reset':True})
+
+    else:
+        res_data['error'] = '비밀번호가 일치하지 않습니다.'
+        return render(request,'web01/secession.html', res_data)
+
+def myArticle(request):
+    get_id = request.GET['id']
+    content = Content.objects.get(id = get_id)
+    replies = Reply.objects.filter(originalCon=content)
+    get_user = request.session['user']
+    return render(request,"web01/myArticle.html",{'content':content,'replies':replies, 'user':get_user})
+
+
+
+    
+    
     
 
     

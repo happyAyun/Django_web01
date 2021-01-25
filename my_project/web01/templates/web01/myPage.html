@@ -13,16 +13,18 @@
       padding-left: 75%;
     }
 </style>
-<!-- <script>
-    var con_test = confirm("정말 회원 탈퇴를 하시겠습니까?");
-    if(con_test == true){
-        href='secession';
-        window.location.href;
+<script>
+    function resetFunc(){
+        var res = window.confirm("정말 회원 탈퇴를 하시겠습니까?");
+        if(res){
+            document.location.href="{% url 'secession'%}";
+        }
+        else{
+            alert("취소되었습니다.");
+        }
     }
-    else if(con_test == false){
-      document.write("취소를 누르셨군요.");
-    }
-</script> -->
+    
+</script>
 
 <div class="section-container">
     <div class="container">
@@ -36,7 +38,7 @@
                 <div class="fa-container">
                     <i class="fa fa-comment-o fa-3x" aria-hidden="true"></i>
                 </div>
-                <h3 class="text-center"><a href="#" id="comfirm">회원탈퇴 </a></h3>
+                <h3 class="text-center"><a href="#" onclick="resetFunc()">회원탈퇴 </a></h3>
                 <p></p>
             </div>
 

@@ -7,29 +7,18 @@
         <div class="row">
             <div class="col-xs-12 col-md-offset-2 col-md-8">
                 <div class="section-container-spacer">
-                    <h2 class="text-center">비밀번호 변경하기</h2>
+                    <h2 class="text-center">회원 탈퇴하기</h2>
                 </div>
-                <form action="./changePW/" method="POST">
+                <form action="./resetUser/" method="POST">
                     {%csrf_token%}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="password" name="password" class="form-control" placeholder="변경전 현재 비밀번호">
+                                <input type="password" name="password" class="form-control" placeholder="비밀번호 입력">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="password" name="re_pw" class="form-control" placeholder="변경할 비밀번호">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="password" name="re_pw2" class="form-control" placeholder="변경할 비밀번호 확인">
-                            </div>
-                        </div>
-                    </div>
+                    
                     <br>
                     <div class="row">
                         <div class="col-md-6">
@@ -37,7 +26,7 @@
                         </div>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">변경하기</button> &nbsp; <span> </span>
+                    <button type="submit" class="btn btn-primary">탈퇴하기</button> &nbsp; <span> </span>
                     <p>
                         <br>
                         <a href="{%url 'myPage'%}" class="btn btn-default">마이페이지</a>

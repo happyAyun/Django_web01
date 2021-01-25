@@ -23,14 +23,14 @@
                     <tbody>
     
                         {% for content in contents %}
-                        <form action="./moreView/?id={{content.id}}" method="GET">
+                        <form action="./myArticle/?id={{content.id}}" method="GET">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{content.id}}" />
                             <!-- <input type="hidden" name="u_id" value="{{user.user_id}}" />  -->
                             <div name='content'>
                                 <tr>
                                     <td>{{ content.id }}</td>
-                                    <td class="tit_notice"><a href="./moreView/?id={{content.id}}">{{content.title}}</a></td>   
+                                    <td class="tit_notice"><a href="./myArticle/?id={{content.id}}">{{content.title}}</a></td>   
                                     <!--href="url?id='{{o.id}}'"-->
                                     
                                     <td class="tit_notice">{{content.userId.user_id}}</a> </td>

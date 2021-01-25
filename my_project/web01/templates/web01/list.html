@@ -2,6 +2,10 @@
 
 {% block content %}
 		<!-- bodytext_area -->
+		<br><br>
+        <div class="section-container-spacer">
+            <h2 class="text-center">게시판</h2>
+		</div>
 		<div class="bodytext_area box_inner">
 			<form action="./listSearch/" method="GET" class="minisrch_form">
                 {% csrf_token %}
@@ -47,6 +51,7 @@
 					
 				</tbody>
 			</table>
+			<br>
 			<a href="{% url 'listForm' %}" class="btn btn-default navbar-btn" >글쓰기</a>
 			<!-- pagination -->
 			 <div class="pagination">
