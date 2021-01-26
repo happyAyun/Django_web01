@@ -10,13 +10,27 @@
     <script>alert("작성하신 답글 내용이 없습니다.")</script>
 {% endif %}
 
+{% if not_change %}
+    <script>alert("변경하신 답글란에 내용이 없어 변경되지 않았습니다.")</script>
+{% endif %}
+<style>
+    #hide{
+        display: none;
+    }
+    #hide2{
+        display: none;
+    }
+</style>
 <script>
-    
-    function modify(context){
-        document.getElementById("showHide").style.display='none';
-        document.getElementById("two").innerHTML;
-
-        // document.getElementsById("modify_div").style.display='block';
+    function modify(r){
+        document.getElementById("show").style.display='none';
+        document.getElementById("hide").style.display='block';
+        document.getElementById("show2").style.display='none';
+    }
+    function cencel(){
+        document.getElementById("show").style.display='block';
+        document.getElementById("hide").style.display='none';
+        document.getElementById("show2").style.display='block';
     }
 </script>
 
@@ -38,8 +52,6 @@
                 </div>
             </li>
         </ul>
-        <!-- <a href="./deleteList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 삭제</a>
-        <a href="./updateList/?id={{content.id}}" class="btn btn-default navbar-btn ch" >글 수정</a> -->
         
         <p class="btn_line txt_right">
             <a href="{% url 'viewList' %}" class="btn_bbs">목록</a>
@@ -61,7 +73,7 @@
             <a href="{% url 'viewList' %}" class="btn btn-default">취소</a>
         </form>
         
-         <!-- 답글리스트 -->
+    <!-- 답글리스트 -->
 
         <table class="bbsListTbl">
             <caption class="hdd">목록</caption>
@@ -79,28 +91,29 @@
             
             <tbody>
                 {% for reply in replies %}
-                <form action="./deleteReply/" method="POST" name="replyform">
-                    <!-- replyform.context.value -->
+                <form action="./modifyReply/" method="POST" name="replyform">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{reply.id}}" />
                     <input type="hidden" name="c_id" value="{{content.id}}" />
-                    <div name='content' id="two">
                         <tr id="showHide">
                             <td>{{ reply.id }}</td>
-                            <td class="tit_notice"> 
-                                {{reply.replyCon}}
-                                <div id="modify_div" >
-                                    <!-- <textarea class="form-control" rows="3" name="context">{{reply.replyCon}}</textarea> -->
+                            <td class="tit_notice" >
+                                <div id="show"> 
+                                    {{reply.replyCon}}
+                                </div>
+                                <div id="hide"> 
+                                    <textarea id="context" class="form-control" rows="3" cols="30" name="context" style="width: 100%;">{{reply.replyCon}}</textarea>
+                                    <button type="submit" class="btn btn-primary">등록</button>
+                                    <a href="#" onclick="cencel()" class="btn btn-primary">취소</a>
                                 </div>
                             </td>
                             <td class="tit_notice">{{reply.user}}</td> 
                             {% if user == reply.user %}
-                                <td class="tit_notice" >
-                                    <a href="#" onclick="modify('{{reply.replyCon}}')" class="btn btn-primary">수정</a>
-                                    <button type="submit" class="btn btn-default">삭제</button>
+                                <td class="tit_notice" id="show2">
+                                    <a href="#" onclick="modify('{{reply.id}}')" class="btn btn-primary">수정</a>
+                                    <a href="./deleteReply/?id={{reply.id}}&c_id={{content.id}}"type="submit" class="btn btn-default">삭제</a>
                                 </td>
                             {% endif %}
-                            <!--href="url?id='{{o.id}}'"-->
                         </tr>
                     </div>
                 </form>

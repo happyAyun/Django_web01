@@ -178,8 +178,8 @@ def createReply(request):
         return render(request,'web01/login.html',{'not_login':True})
 
 def deleteReply(request):
-    get_id = request.POST.get('id',None)
-    get_cId = request.POST.get('c_id',None)
+    get_id = request.GET['id']
+    get_cId = request.GET['c_id']
     reply = Reply.objects.get(id = get_id)
     reply.delete()
     replies = Reply.objects.all()
@@ -266,7 +266,22 @@ def myArticle(request):
     get_user = request.session['user']
     return render(request,"web01/myArticle.html",{'content':content,'replies':replies, 'user':get_user})
 
-
+def modifyReply(request):
+    re_id = request.POST.get('id',None)
+    con_id = request.POST.get('c_id',None)
+    print(re_id,con_id)
+    re_context = request.POST.get('context',None)
+    print(re_context)
+    reply = Reply.objects.get(id = re_id)
+    content = Content.objects.get(id = con_id)
+    get_user = request.session['user']
+    if not re_context:
+        replies = Reply.objects.filter(originalCon=content)
+        return render(request,"web01/view.html",{'content':content,'replies':replies, 'user':get_user,'not_change':True})
+    reply.replyCon = re_context
+    reply.save()
+    replies = Reply.objects.filter(originalCon=content)
+    return render(request,'web01/view.html',{'content':content,'replies':replies, 'user':get_user})
 
     
     

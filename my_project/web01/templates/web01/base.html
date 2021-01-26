@@ -21,7 +21,62 @@
 
 
   <link href="{% static 'main.97292821.css'%}" rel="stylesheet"></head>
-
+  <style>
+      .sc_user .tab_area .badge_new {
+        display: inline-block;
+        min-width: 6px;
+        height: 18px;
+        padding: 0 6px;
+        background-color: #1fd771;
+        background-image: -webkit-linear-gradient(300deg,#1fd771,#20d771 50%,#22d7b0);
+        background-image: linear-gradient(150deg,#1fd771,#20d771 50%,#22d7b0);
+        -webkit-border-radius: 18px;
+        border-radius: 18px;
+        font-size: 10px;
+        line-height: 18px;
+        color: #fff;
+        font-weight: 700;
+        letter-spacing: 0;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+        box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+        vertical-align: top;
+        text-align: center;
+        white-space: nowrap;
+    }
+    i {
+        font-style: normal;
+    }
+    element.style {
+        width: 1044px;
+        transform: translate(0px, 0px) translateZ(0px);
+    }
+    user agent stylesheet
+    div {
+        display: block;
+    }
+    .my_wrap {
+        width: 350px;
+        height: 457px;
+        padding: 0 20px;
+        letter-spacing: -.2px;
+    }
+    html[data-dark=true] body {
+        background-color: #1e1f21;
+        color: #d9d9d9;
+    }
+    body, button, input, select, table, textarea {
+        font-size: 12px;
+        line-height: 16px;
+        color: #202020;
+        font-family: -apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕",helvetica,"Apple SD Gothic Neo",sans-serif;
+    }
+    .sc_user .tab_area .tab_box_wrap:after {
+        content: "";
+        display: table;
+        table-layout: fixed;
+        clear: both;
+    }
+  </style>
 <body>
 
  <!-- Add your content of header -->
@@ -35,8 +90,11 @@
             {% if request.session.user %}
                 <p>
                     <h4> {{ request.session.user }} 님, 환영합니다.</h4>
+                    
                     <a href="{%url 'myPage'%}" class="btn btn-default navbar-btn" >마이페이지</a>
-                    <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a>
+                    <a href="{%url 'logout'%}" class="btn btn-default navbar-btn" >로그아웃</a> &nbsp;
+                    <!-- <a href="#" role="tab" class="tab MY_TAB_NOTI" aria-selected="false" data-service="noti" data-clk="nmy.alert">알림<div class="badge_box">&nbsp;&nbsp;&nbsp;
+                    <i class="badge_new">29</i></div></a> -->
                 </p>
             {% else %} 
                 <p>
