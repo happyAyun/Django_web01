@@ -53,7 +53,7 @@
 						<td class="tit_notice"></td>   
 						<td class="tit_notice">해당 검색 결과가 없습니다.</a> </td>
 						<td class="tit_notice"><p class="btn_line txt_right">
-							<a href="{% url 'viewList' %}" class="btn_bbs">목록이동</a>
+							<a href="{% url 'myWriting' %}" class="btn_bbs">목록이동</a>
 						</p> </td>
 					</div>
 				{% endif %}
@@ -62,17 +62,28 @@
 			<br>
 			<a href="{% url 'listForm' %}" class="btn btn-default navbar-btn" >글쓰기</a>
 			<!-- pagination -->
-			 <div class="pagination">
-				<!-- <a href="javascript:;" class="firstpage  pbtn"><img src="images/btn_firstpage.png" alt="첫 페이지로 이동"></a>
-				<a href="javascript:;" class="prevpage  pbtn"><img src="images/btn_prevpage.png" alt="이전 페이지로 이동"></a>
-				<a href="javascript:;"><span class="pagenum currentpage">1</span></a>
-				<a href="javascript:;"><span class="pagenum">2</span></a>
-				<a href="javascript:;"><span class="pagenum">3</span></a>
-				<a href="javascript:;"><span class="pagenum">4</span></a>
-				<a href="javascript:;"><span class="pagenum">5</span></a>
-				<a href="javascript:;" class="nextpage  pbtn"><img src="images/btn_nextpage.png" alt="다음 페이지로 이동"></a>
-				<a href="javascript:;" class="lastpage  pbtn"><img src="images/btn_lastpage.png" alt="마지막 페이지로 이동"></a> -->
-			</div> 
+			<!-- 이전페이지 -->
+			<div class="pagination">
+			{% if contents.has_previous  %}
+			<a href="./?page={{ contents.previous_page_number }}"><span class="pagenum ">이전</span></a>
+			{% endif %}
+			
+			{% for page_number in contents.paginator.page_range %}
+			{% if page_number >= contents.number|add:-3 and page_number <= contents.number|add:3 %}
+				{% if page_number == contents.number %}
+				<a href="./?page={{ page_number }}"><span class="pagenum currentpage">{{page_number}}</span></a>
+				{% else %}
+				<a href="./?page={{ page_number }}"><span class="pagenum ">{{page_number}}</span></a>
+				{% endif %}
+			{% endif %}
+			{% endfor %}
+
+			<!-- 다음페이지 -->
+			{% if contents.has_next %}
+			<a href="./?page={{ contents.next_page_number }}"><span class="pagenum ">다음</span></a>
+			{% endif %}
+		</div>
+			
 			<!-- //pagination -->
 			
 		</div>
@@ -81,4 +92,4 @@
 	</div>
 	<!-- //container -->
 
-    {% endblock %}
+{% endblock %}

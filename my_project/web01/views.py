@@ -7,8 +7,9 @@ from .models import Content, User, Reply
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-# Create your views here.
+from django.core.paginator import Paginator
 import bcrypt
+# Create your views here.
 
 def index(request):
     return render(request,"web01/index.html")
@@ -40,14 +41,20 @@ def createList(request):
             )
             content.save()
             contents = Content.objects.all()
-            return render(request,"web01/list.html", {'contents':contents,'user_id':user.user_id})
+            page = request.GET.get('page',1)
+            paginator = Paginator(contents,5)
+            page_obj = paginator.get_page(page)
+            return render(request,"web01/list.html", {'contents':page_obj,'user_id':user.user_id})
     else:
         return render(request,'web01/form.html',{'not_login' : True})
 
 
 def viewList(request):
     contents = Content.objects.all()
-    return render(request,"web01/list.html", {'contents':contents})
+    page = request.GET.get('page',1)
+    paginator = Paginator(contents,5)
+    page_obj = paginator.get_page(page)
+    return render(request,"web01/list.html", {'contents':page_obj})
 
 def moreView(request): 
     get_id = request.GET['id']
@@ -184,6 +191,31 @@ def createReply(request):
     else:
         return render(request,'web01/login.html',{'not_login':True})
 
+def myCreateReply(request):
+    tid = request.POST.get('id',None)
+    context = request.POST.get('context',None)
+    content_id = request.POST.get('content.id',None)
+    content = Content.objects.get(id = content_id)
+    get_user = request.session['user']
+    if not context:
+        replies = Reply.objects.all().filter(originalCon=content_id)
+        return render(request,'web01/myArticle.html',{'not_write':True, 'content':content, 'replies':replies, 'user':get_user})
+    if not tid:
+        reply = Reply(
+            user = get_user,
+            replyCon = context,
+            originalCon = content
+        )
+        reply.save()
+        replies = Reply.objects.all().filter(originalCon=content_id)
+        return render(request,'web01/myArticle.html',{'content':content,'replies':replies,'user':get_user})
+    else:
+        reply = Reply.objects.get(id=tid)
+        reply.replyCon = context
+        reply.save()
+        replies = Reply.objects.all().filter(originalCon=content_id) 
+        return render(request,'web01/myArticle.html',{'content':content,'replies':replies,'user':get_user}) 
+
 def deleteReply(request):
     get_id = request.GET['id']
     get_cId = request.GET['c_id']
@@ -246,7 +278,10 @@ def myWriting(request):
     user = request.session['user']
     user = User.objects.get(user_id=user)
     contents = Content.objects.all().filter(userId=user)
-    return render(request, 'web01/myWriting.html', {'contents':contents})
+    page = request.GET.get('page',1)
+    paginator = Paginator(contents,5)
+    page_obj = paginator.get_page(page)
+    return render(request, 'web01/myWriting.html', {'contents':page_obj})
 
 def resetUser(request):
     pw = request.POST.get('password',None)
