@@ -46,22 +46,22 @@
 			<!-- 이전페이지 -->
 			<div class="pagination">
                 {% if contents.has_previous  %}
-                <a href="./?page={{ contents.previous_page_number }}"><span class="pagenum ">이전</span></a>
+                <a href="./myWriting/?page={{ contents.previous_page_number }}"><span class="pagenum ">이전</span></a>
                 {% endif %}
                 
                 {% for page_number in contents.paginator.page_range %}
                 {% if page_number >= contents.number|add:-3 and page_number <= contents.number|add:3 %}
                     {% if page_number == contents.number %}
-                    <a href="./?page={{ page_number }}"><span class="pagenum currentpage">{{page_number}}</span></a>
+                    <a href="./myWriting/?page={{ page_number }}"><span class="pagenum currentpage">{{page_number}}</span></a>
                     {% else %}
-                    <a href="./?page={{ page_number }}"><span class="pagenum ">{{page_number}}</span></a>
+                    <a href="./myWriting/?page={{ page_number }}"><span class="pagenum ">{{page_number}}</span></a>
                     {% endif %}
                 {% endif %}
                 {% endfor %}
     
                 <!-- 다음페이지 -->
                 {% if contents.has_next %}
-                <a href="./?page={{ contents.next_page_number }}"><span class="pagenum ">다음</span></a>
+                <a href="./myWriting/?page={{ contents.next_page_number }}"><span class="pagenum ">다음</span></a>
                 {% endif %}
             </div>
                     

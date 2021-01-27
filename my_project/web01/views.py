@@ -72,7 +72,14 @@ def deleteList(request):
     get_id = request.GET['id']
     content = Content.objects.get(id = get_id)
     content.delete()
-    return HttpResponseRedirect(reverse("viewList"))
+    user = request.session['user']
+    user = User.objects.get(user_id=user)
+    contents = Content.objects.all().filter(userId=user)
+    page = request.GET.get('page',1)
+    paginator = Paginator(contents,5)
+    page_obj = paginator.get_page(page)
+    return render(request, 'web01/myWriting.html', {'contents':page_obj})
+
 
 def updateList(request):
     get_id = request.GET['id']
@@ -92,8 +99,13 @@ def updateView(request):
         content.title = m_title
         content.context = m_context
         content.save()
-        contents = Content.objects.all()
-        return render(request,'web01/list.html',{'contents':contents})
+        user = request.session['user']
+        user = User.objects.get(user_id=user)
+        contents = Content.objects.all().filter(userId=user)
+        page = request.GET.get('page',1)
+        paginator = Paginator(contents,5)
+        page_obj = paginator.get_page(page)
+        return render(request, 'web01/myWriting.html', {'contents':page_obj})
 
 def listSearch(request):
     s_text = request.GET['text']
