@@ -30,7 +30,7 @@
                 </thead>
                 
 				<tbody>
-
+				{% if contents %}
 					{% for content in contents %}
 					<form action="./moreView/?id={{content.id}}" method="GET">
 						{% csrf_token %}
@@ -48,7 +48,15 @@
                         </div>
                     </form>
 					{% endfor %} 
-					
+				{% else %}
+					<div name='content'>
+						<td class="tit_notice"></td>   
+						<td class="tit_notice">해당 검색 결과가 없습니다.</a> </td>
+						<td class="tit_notice"><p class="btn_line txt_right">
+							<a href="{% url 'viewList' %}" class="btn_bbs">목록이동</a>
+						</p> </td>
+					</div>
+				{% endif %}
 				</tbody>
 			</table>
 			<br>

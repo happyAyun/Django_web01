@@ -158,22 +158,29 @@ def logout(request):
 
 def createReply(request):
     if request.session.get('user'):
+        tid = request.POST.get('id',None)
         context = request.POST.get('context',None)
         content_id = request.POST.get('content.id',None)
         content = Content.objects.get(id = content_id)
-        replies = Reply.objects.all().filter(originalCon=content_id)
         get_user = request.session['user']
         if not context:
+            replies = Reply.objects.all().filter(originalCon=content_id)
             return render(request,'web01/view.html',{'not_write':True, 'content':content, 'replies':replies, 'user':get_user})
-        
-        reply = Reply(
-            user = get_user,
-            replyCon = context,
-            originalCon = content
-        )
-        reply.save()
-        replies = Reply.objects.all().filter(originalCon=content_id)
-        return render(request,'web01/view.html',{'content':content,'replies':replies,'user':get_user})
+        if not tid:
+            reply = Reply(
+                user = get_user,
+                replyCon = context,
+                originalCon = content
+            )
+            reply.save()
+            replies = Reply.objects.all().filter(originalCon=content_id)
+            return render(request,'web01/view.html',{'content':content,'replies':replies,'user':get_user})
+        else:
+            reply = Reply.objects.get(id=tid)
+            reply.replyCon = context
+            reply.save()
+            replies = Reply.objects.all().filter(originalCon=content_id) 
+            return render(request,'web01/view.html',{'content':content,'replies':replies,'user':get_user}) 
     else:
         return render(request,'web01/login.html',{'not_login':True})
 
@@ -266,22 +273,20 @@ def myArticle(request):
     get_user = request.session['user']
     return render(request,"web01/myArticle.html",{'content':content,'replies':replies, 'user':get_user})
 
-def modifyReply(request):
-    re_id = request.POST.get('id',None)
-    con_id = request.POST.get('c_id',None)
-    print(re_id,con_id)
-    re_context = request.POST.get('context',None)
-    print(re_context)
-    reply = Reply.objects.get(id = re_id)
-    content = Content.objects.get(id = con_id)
-    get_user = request.session['user']
-    if not re_context:
-        replies = Reply.objects.filter(originalCon=content)
-        return render(request,"web01/view.html",{'content':content,'replies':replies, 'user':get_user,'not_change':True})
-    reply.replyCon = re_context
-    reply.save()
-    replies = Reply.objects.filter(originalCon=content)
-    return render(request,'web01/view.html',{'content':content,'replies':replies, 'user':get_user})
+# def modifyReply(request):
+#     re_id = request.POST.get('id',None)
+#     con_id = request.POST.get('c_id',None)
+#     re_context = request.POST.get('context',None)
+#     reply = Reply.objects.get(id = re_id)
+#     content = Content.objects.get(id = con_id)
+#     get_user = request.session['user']
+#     if not re_context:
+#         replies = Reply.objects.filter(originalCon=content)
+#         return render(request,"web01/view.html",{'content':content,'replies':replies, 'user':get_user,'not_change':True})
+#     reply.replyCon = re_context
+#     reply.save()
+#     replies = Reply.objects.filter(originalCon=content)
+#     return render(request,'web01/view.html',{'content':content,'replies':replies, 'user':get_user})
 
     
     

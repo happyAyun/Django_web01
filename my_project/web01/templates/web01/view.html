@@ -22,10 +22,12 @@
     }
 </style>
 <script>
-    function modify(r){
-        document.getElementById("show").style.display='none';
-        document.getElementById("hide").style.display='block';
-        document.getElementById("show2").style.display='none';
+    function modify(id,cont){
+        document.getElementById("Text").value=cont;
+        document.getElementById("tId").value=id;
+        // document.getElementById("show").style.display='none';
+        // document.getElementById("hide").style.display='block';
+        // document.getElementById("show2").style.display='none';
     }
     function cencel(){
         document.getElementById("show").style.display='block';
@@ -62,15 +64,16 @@
         <br>
         <form action="./createReply/" method="POST"> 
             {% csrf_token %}
+            <input type="hidden" id="tId" name="id" value=""/>
             <div class="form-group">
                 <input type="hidden" name="content.id" value="{{content.id}}"/>
-                <textarea class="form-control" rows="3" name="context" placeholder="답글을 달아주세요. 로그인 후 이용이 가능합니다."></textarea>
+                <textarea id="Text" class="form-control" rows="3" name="context" placeholder="답글을 달아주세요. 로그인 후 이용이 가능합니다."></textarea>
             </div>
             <div>
                 {{error}}
             </div>
             <button type="submit" class="btn btn-primary">등록</button>
-            <a href="{% url 'viewList' %}" class="btn btn-default">취소</a>
+            <a href="./moreView/?id={{content.id}}" class="btn btn-default">취소</a>
         </form>
         
     <!-- 답글리스트 -->
@@ -91,7 +94,7 @@
             
             <tbody>
                 {% for reply in replies %}
-                <form action="./modifyReply/" method="POST" name="replyform">
+                <form action="./deleteReply/" method="POST" name="replyform">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{reply.id}}" />
                     <input type="hidden" name="c_id" value="{{content.id}}" />
@@ -101,16 +104,16 @@
                                 <div id="show"> 
                                     {{reply.replyCon}}
                                 </div>
-                                <div id="hide"> 
+                                <!-- <div id="hide"> 
                                     <textarea id="context" class="form-control" rows="3" cols="30" name="context" style="width: 100%;">{{reply.replyCon}}</textarea>
                                     <button type="submit" class="btn btn-primary">등록</button>
                                     <a href="#" onclick="cencel()" class="btn btn-primary">취소</a>
-                                </div>
+                                </div> -->
                             </td>
                             <td class="tit_notice">{{reply.user}}</td> 
                             {% if user == reply.user %}
                                 <td class="tit_notice" id="show2">
-                                    <a href="#" onclick="modify('{{reply.id}}')" class="btn btn-primary">수정</a>
+                                    <a href="#" onclick="modify('{{reply.id}}','{{reply.replyCon}}')" class="btn btn-primary">수정</a>
                                     <a href="./deleteReply/?id={{reply.id}}&c_id={{content.id}}"type="submit" class="btn btn-default">삭제</a>
                                 </td>
                             {% endif %}
