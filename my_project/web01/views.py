@@ -109,12 +109,19 @@ def updateView(request):
 
 def listSearch(request):
     s_text = request.GET['text']
+    s_text = s_text.strip()
     if not s_text:
         contents = Content.objects.all()
-        return render(request, 'web01/list.html',{'contents' : contents})
+        page = request.GET.get('page',1)
+        paginator = Paginator(contents,5)
+        page_obj = paginator.get_page(page)
+        return render(request, 'web01/list.html',{'contents' : page_obj})
     else:
         contents = Content.objects.all().filter(Q(title__icontains=s_text) | Q(context__icontains=s_text)).distinct()
-        return render(request,'web01/list.html',{'contents':contents})
+        page = request.GET.get('page',1)
+        paginator = Paginator(contents,5)
+        page_obj = paginator.get_page(page)
+        return render(request,'web01/list.html',{'contents':page_obj,'text':s_text})
 
         
 def userJoin(request):
@@ -233,7 +240,7 @@ def deleteReply(request):
     get_cId = request.GET['c_id']
     reply = Reply.objects.get(id = get_id)
     reply.delete()
-    replies = Reply.objects.all()
+    replies = Reply.objects.all().filter(originalCon=get_cId)
     content = Content.objects.get(id = get_cId)
     if request.session.get('user'):
         get_user = request.session.get('user')
@@ -244,7 +251,7 @@ def myDeleteReply(request):
     get_cId = request.POST.get('c_id',None)
     reply = Reply.objects.get(id = get_id)
     reply.delete()
-    replies = Reply.objects.all()
+    replies = Reply.objects.all().filter(originalCon=get_cId)
     content = Content.objects.get(id = get_cId)
     if request.session.get('user'):
         get_user = request.session.get('user')

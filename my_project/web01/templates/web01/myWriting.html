@@ -50,7 +50,7 @@
                 {% endif %}
                 
                 {% for page_number in contents.paginator.page_range %}
-                {% if page_number >= contents.number|add:-3 and page_number <= contents.number|add:3 %}
+                {% if page_number >= contents.number|add:-2 and page_number <= contents.number|add:2 %}
                     {% if page_number == contents.number %}
                     <a href="./myWriting/?page={{ page_number }}"><span class="pagenum currentpage">{{page_number}}</span></a>
                     {% else %}
