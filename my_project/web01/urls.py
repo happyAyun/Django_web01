@@ -52,4 +52,6 @@ urlpatterns = [
     re_path(r'myArticle/$', views.myArticle, name="myArticle"),
 
     re_path(r'myCreateReply/$', views.myCreateReply, name="myCreateReply"),
+
+
 ]

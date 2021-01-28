@@ -99,14 +99,16 @@ def updateView(request):
         content.title = m_title
         content.context = m_context
         content.save()
+        content = Content.objects.get(id=m_id)
+        replies = Reply.objects.filter(originalCon=m_id)
         user = request.session['user']
-        user = User.objects.get(user_id=user)
-        contents = Content.objects.all().filter(userId=user)
-        page = request.GET.get('page',1)
-        paginator = Paginator(contents,5)
-        page_obj = paginator.get_page(page)
-        return render(request, 'web01/myWriting.html', {'contents':page_obj})
-
+        # user = User.objects.get(user_id=user)
+        # contents = Content.objects.all().filter(userId=user)
+        # page = request.GET.get('page',1)
+        # paginator = Paginator(contents,5)
+        # page_obj = paginator.get_page(page)
+        # return render(request, 'web01/myWriting.html', {'contents':page_obj})
+        return render(request, 'web01/myArticle.html',{'content':content, 'replies':replies,'user':user})
 def listSearch(request):
     s_text = request.GET['text']
     s_text = s_text.strip()
@@ -326,6 +328,12 @@ def myArticle(request):
     replies = Reply.objects.filter(originalCon=content)
     get_user = request.session['user']
     return render(request,"web01/myArticle.html",{'content':content,'replies':replies, 'user':get_user})
+
+def findPW(request):
+    return render(request, "web01/findPW.html")
+
+
+    
 
 # def modifyReply(request):
 #     re_id = request.POST.get('id',None)
